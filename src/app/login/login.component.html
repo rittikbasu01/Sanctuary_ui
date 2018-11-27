@@ -1,0 +1,64 @@
+<div class="loginform">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6">
+        <div class="modal-content" style="max-width:100%;text-align:center;">
+          <div class="modal-header" style="background-color:blueviolet;color:aliceblue">
+            <button type="button" class="close" routerLink=''>&times;</button>
+            <h4 class="modal-title">Login</h4>
+          </div>
+
+          <div class="modal-body" style="padding:10px 30px 15px;">
+            <form [formGroup]="loginForm">
+              <mat-error *ngIf="result.Status == false"> {{result.Message}}
+              </mat-error>
+              <mat-form-field>
+                <input matInput placeholder="Email" formControlName="emailId" [(ngModel)]="userId" required>
+              </mat-form-field>
+
+              <br/>
+              <!-- <mat-form-field>
+                <input type="password" matInput placeholder="Password" formControlName="password" [(ngModel)]="userPassword" required>
+              </mat-form-field> -->
+
+              <mat-form-field>
+                <input matInput placeholder="password"  [type]="hide ? 'password' : 'text'"  formControlName="password"  [(ngModel)]="userPassword"
+                  required>
+                  <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+              </mat-form-field>
+
+
+              <br/>
+              <!-- <mat-checkbox formControlName="rememberme">Checked</mat-checkbox> -->
+              <input type="checkbox" formControlName="rememberme">&nbsp; Remember me
+              <br>
+              <br>
+              <button type="button" class="btn btn-success" [disabled]="!loginForm.valid" (click)="loginUser(loginForm)">Login</button>
+
+            </form>
+            <br>
+            <span style="font-size:15px;">Forgot Password?</span>
+            <button class="btn btn-link" (click)="forgetPassword()" style="font-size:12px;">Click here</button>
+
+            <div *ngIf="showForgetPasswordForm">
+              <form [formGroup]="forgotPasswordForm">
+                <mat-error *ngIf="forgotEmailResult.Status == false"> {{forgotEmailResult.Message}}
+                </mat-error>
+                <mat-form-field>
+                  <input matInput placeholder="Email" formControlName="forgotUserAccountEmail" required>
+                </mat-form-field>
+                <button mat-button (click)="emailSend(forgotPasswordForm)">Send</button>
+              </form>
+            </div>
+
+            <br>
+            <span style="font-size:15px;">Don't have account ?</span>
+            <button class="btn btn-link" routerLink="/register" style="font-size:12px;">Register here</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3"></div>
+    </div>
+  </div>
+</div>

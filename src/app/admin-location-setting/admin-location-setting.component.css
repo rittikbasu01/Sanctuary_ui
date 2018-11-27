@@ -1,0 +1,28 @@
+.example-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .example-container > * {
+    width: 100%;
+  }
+  .header{
+      background-color:blueviolet;
+  }
+  .content{
+      text-align: left;
+      padding-left: 5%;
+  }
+  .card{
+      max-width:65%;
+      padding: 0px;
+      text-align:left;
+  }
+  .location{
+      
+      padding: 5%;
+    
+  }
+  h5{
+      color:red;
+  }

@@ -1,0 +1,70 @@
+<!--new Navbar-->
+<nav class="navbar navbar-inverse" style="background-color:rgb(42, 6, 59);margin:0px;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <span style="font-family:Imprint MT Shadow;font-size:40px;color:whitesmoke;">
+        <b>The Sanctuary</b>
+      </span>
+
+
+
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+
+      <ul class="nav navbar-nav navbar-right" *ngIf="status==false">
+
+        <li>
+          <button class="btn btn-link" routerLink="register" style="color:white; margin:10px;text-decoration:none;">
+            <span class="glyphicon glyphicon-user" style="color:white"></span> Sign Up</button>
+        </li>
+
+        <li>
+          <button class="btn btn-link" routerLink='login' style="color:white; margin:10px;text-decoration:none;">
+            <span class="glyphicon glyphicon-log-in" style="color:white"></span> Login</button>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right" *ngIf="status==true">
+        <li *ngIf="isAdmin==false">
+          <!--cab booking-->
+          <span>
+            <button class="btn btn-link" routerLink="cabbooking" style="color:white;margin:10px;text-decoration:none;">Cab Facility</button>
+          </span>
+          <!--cab booking-->
+          <button class="btn btn-link" routerLink="/booking" style="color:white; margin:12px;text-decoration:none;">
+            Book Room</button>
+        </li>
+        <li *ngIf="isAdmin==true">
+          <button class="btn btn-link" routerLink="/admin" style="color:white; margin:12px;text-decoration:none;">
+            Admin Home</button>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href style="font-size:15px;margin:5px;color:white">{{name}}
+            <span class="fas fa-user-circle"></span>
+              <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a routerLink="profile">Profile</a>
+            </li>
+            <li *ngIf="isAdmin==false">
+              <a routerLink="previous-bookings">Transaction</a>
+            </li>
+            <li *ngIf="isAdmin==true">
+              <a routerLink="reports">Reports</a>
+            </li>
+            <li>
+              <a (click)="logout()" routerLink="">Logout</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!--new Navbar-->

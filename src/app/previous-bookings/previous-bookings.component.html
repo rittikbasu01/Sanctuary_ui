@@ -1,0 +1,104 @@
+<div class="container">
+    <div class="row">
+        <p style="text-align:center;font-family:Imprint MT Shadow;color:blueviolet; font-size:35px;margin:0;">
+            <b>
+                TRANSACTIONS</b>
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="example-container mat-elevation-z8">
+                <mat-table #table [dataSource]="dataSource">
+
+                    <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="BookingFromDate">
+                        <mat-header-cell *matHeaderCellDef> From Date </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.BookingFromDate | date : 'dd-MMM-yyyy'}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="BookingToDate">
+                        <mat-header-cell *matHeaderCellDef> To Date </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.BookingToDate | date : 'dd-MMM-yyyy'}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="NoOfRooms">
+                        <mat-header-cell *matHeaderCellDef> No Of Rooms </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.NoOfRooms}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="LocationCity">
+                        <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.Assets.Location.LocationCity}} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="view_booking(row)"></mat-row>
+                </mat-table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="example-list" *ngIf="!datasource2">
+                <i class="far fa-list-alt"></i>&nbsp;&nbsp;
+                <i class="far fa-calendar-check"></i>&nbsp;&nbsp;
+                <i class="far fa-edit"></i>
+                <br>
+                <b>Bookings</b>
+            </div>
+            <div class="example-form" *ngIf="datasource2">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <b>User Name :</b>{{datasource2.User.FirstName}} {{datasource2.User.LastName}}</div>
+                    <div class="col-sm-6">
+                        <b>Email :</b>{{datasource2.User.Email}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <b>Booking Id :</b> {{datasource2.BookingId}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <b>Location :</b> {{datasource2.Assets.Location.LocationCity}}, {{datasource2.Assets.Location.LocationCountry}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <b>Check-in :</b> {{datasource2.BookingFromDate}}</div>
+                    <div class="col-sm-6">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <b>Check-out :</b> {{datasource2.BookingToDate}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <b>No Of Rooms Booked :</b> {{datasource2.NoOfRooms}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <b>Total Amount :</b> ${{datasource2.Amount}}</div>
+                    <div class="col-sm-6">
+                        <b>Discount :</b> ${{datasource2.DiscountAmount}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <b>Total Amount Paid :</b> ${{AmountPaid}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4"></div>
+
+                    <div class="col-sm-4 status" *ngIf="datasource2.status == -1">Canceled</div>
+                    <div class="col-sm-4">
+                        <button *ngIf="datasource2.status == 0" type="button" class="btn btn-danger" (click)="cancel_booking(datasource2)">CancelBooking</button>
+                    </div>
+                    <div class="col-md-4 status" *ngIf="datasource2.status == 1" style="background-color:aqua;">Completed</div>
+                    <div class="col-sm-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

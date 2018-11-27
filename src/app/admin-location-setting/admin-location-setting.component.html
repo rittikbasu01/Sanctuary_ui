@@ -1,0 +1,51 @@
+<div class="container">
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+      <mat-card style="padding:0px">
+        <mat-card-header class="header">
+
+          <mat-card-title>
+              <p style="font-size:30px;background-color:blueviolet;color:white; bottom:0px;">
+                 Add Location
+                </p>
+          </mat-card-title>
+
+        </mat-card-header>
+        <mat-card-content class="content">
+
+          <form [formGroup]="adminAddLocationForm">
+
+            <mat-form-field>
+              <input matInput placeholder="Location city name" formControlName="locationCityName" required matTooltip="Name must start with a Uppercase character"
+                matTooltipPosition=right>
+            </mat-form-field>
+            <mat-error *ngIf="!result.Status">{{result.Message}}</mat-error>
+            <br>
+            <mat-form-field>
+                <mat-select placeholder="Select country" formControlName="locationCountryName">
+                  <mat-option  value="Australia">
+                    Australia
+                  </mat-option>
+
+                  <mat-option  value="New Zealand">
+                      New Zealand
+                    </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+              <br>
+            <button mat-raised-button color="primary"  [disabled]="!adminAddLocationForm.valid" (click)="addLocation(adminAddLocationForm)">Add Location</button>
+          </form>
+        </mat-card-content>
+        <br>
+      </mat-card>
+    </div>
+    <div class="col-sm-3"></div>
+  </div>
+  <br>
+  <br>
+  <br>
+</div>

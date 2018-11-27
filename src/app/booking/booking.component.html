@@ -1,0 +1,368 @@
+<div class="content">
+  <div class="container">
+    <div class="search box">
+
+
+      <form [formGroup]="bookingForm">
+        <mat-form-field>
+          <input readonly="readonly" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="fromDatePicker" placeholder="From Date"
+            formControlName="fromdate" (dateChange)="onChange()" required>
+          <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker touchUi="true" #fromDatePicker disabled="false"></mat-datepicker>
+        </mat-form-field>
+        &nbsp; &nbsp;
+
+        <mat-form-field>
+          <input readonly="readonly" matInput [min]="minToDate" [max]="maxDate" [matDatepicker]="toDatePicker" placeholder="To date"
+            formControlName="todate" required>
+          <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker touchUi="true" #toDatePicker disabled="false"></mat-datepicker>
+          <mat-error *ngIf="bookingForm.get('todate').hasError('notValid')">
+            To Date should be ahead of From Date
+          </mat-error>
+
+        </mat-form-field>
+
+        &nbsp; &nbsp;
+
+        <mat-form-field>
+          <mat-select placeholder="Locations" formControlName="location">
+            <mat-option>-- Select any Location --</mat-option>
+            <mat-optgroup label="Australia">
+              <mat-option *ngFor="let locationCityName of  AustralialocationCityNames" [value]="locationCityName">
+                {{ locationCityName}}
+              </mat-option>
+            </mat-optgroup>
+
+            <mat-optgroup label="New Zealand">
+              <mat-option *ngFor="let locationCityName of  NewZealandlocationCityNames" [value]="locationCityName">
+                {{ locationCityName }}
+              </mat-option>
+            </mat-optgroup>
+
+
+          </mat-select>
+        </mat-form-field>
+
+        &nbsp; &nbsp;
+
+        <button mat-raised-button color="primary" class="btn btn-success" [disabled]="!bookingForm.valid" (click)="searchBooking(bookingForm)">
+          <span class="glyphicon glyphicon-search"></span>
+          <b>Search</b>
+        </button>
+      </form>
+    </div>
+  </div>
+  <div style="text-align:center;padding:30px" *ngIf="searchLoading">
+    <i class="fas fa-spinner fa-10x fa-pulse"></i>
+  </div>
+
+  <div *ngIf="isSearchButtonClicked">
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <!--ForIfElse-->
+
+    <div *ngFor="let typeOfRoom of result.Result">
+      <ng-container [ngSwitch]="typeOfRoom.RoomType">
+
+        <!-- meeting room -->
+        <div *ngSwitchCase="'Meeting'">
+          <mat-card class="card">
+            <mat-card-header>
+              <mat-card-title>
+                <p style="font-size:20px">
+                  <b>Meeting Room</b>
+                </p>
+              </mat-card-title>
+            </mat-card-header>
+            <img mat-card-image src="./assets/images/meeting.jpg" alt="" class="image">
+            <mat-card-content>
+              <div class="description">
+                Find convenient, professional space to meet wherever you need. Near the station, near your client, somewhere central for
+                regional staff all available on-demand and by the hour.
+                <br>
+                <!-- <br>Available Rooms: {{result.Result[0].NoOfAvailableRooms}} -->
+                <div *ngIf="typeOfRoom.NoOfAvailableRooms > 0" class="availabilityText">
+                  <br>Available Rooms: {{typeOfRoom.NoOfAvailableRooms}}
+                  <div style="float:right;">
+                    <button mat-raised-button color="warn"  (click)="setbookingDetails(typeOfRoom.NoOfAvailableRooms,typeOfRoom.RoomPrice,bookingForm.value.todate,bookingForm.value.fromdate,typeOfRoom.RoomType,typeOfRoom.AssetId)">Book</button>
+                  </div>
+                </div>
+                <div *ngIf="typeOfRoom.NoOfAvailableRooms <= 0" class="availabilityText">
+                  <br>Unavailable</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <br>
+          <br>
+          <br>
+          <!-- </div> -->
+        </div>
+        <!-- meeting room -->
+
+        <!-- auditorium room -->
+        <div *ngSwitchCase="'Auditorium'">
+          <!-- <div *ngIf="result.Result[2].NoOfAvailableRooms"> -->
+          <!-- <div *ngIf="typeOfRoom.NoOfAvailableRooms"> -->
+          <mat-card class="card">
+            <mat-card-header>
+              <mat-card-title>
+                <p style="font-size: 20px">
+                  <b>Auditorium</b>
+                </p>
+              </mat-card-title>
+            </mat-card-header>
+            <img mat-card-image src="./assets/images/auditorium.jpg" alt="" class="image">
+            <mat-card-content>
+              <div class="description">
+                Sanctuary provides excellent ambience for national and international level conferences and seminars Its Central Convention
+                Centre Complex houses a world-class Auditorium, all available on-demand and by the hour.
+                <br>
+                <!-- <br>Available Rooms: {{result.Result[2].NoOfAvailableRooms}} -->
+                <div *ngIf="typeOfRoom.NoOfAvailableRooms > 0" class="availabilityText">
+                  <br>Available Rooms: {{typeOfRoom.NoOfAvailableRooms}}
+                  <div style="float:right;">
+                    <button mat-raised-button color="warn"  (click)="setbookingDetails(typeOfRoom.NoOfAvailableRooms,typeOfRoom.RoomPrice,bookingForm.value.todate,bookingForm.value.fromdate,typeOfRoom.RoomType,typeOfRoom.AssetId)">Book</button>
+                  </div>
+                </div>
+                <div *ngIf="typeOfRoom.NoOfAvailableRooms <= 0" class="availabilityText">
+                  <br>Unavailable</div>
+
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <br>
+          <br>
+          <br>
+          <!-- </div> -->
+        </div>
+        <!-- auditorium room -->
+
+        <!-- conference room -->
+        <div *ngSwitchCase="'Conference'">
+          <!-- <div *ngIf="result.Result[3].NoOfAvailableRooms"> -->
+          <!-- <div *ngIf="typeOfRoom.NoOfAvailableRooms"> -->
+          <mat-card class="card">
+            <mat-card-header>
+              <mat-card-title>
+                <p style="font-size: 20px">
+                  <b>Conference Room</b>
+                </p>
+              </mat-card-title>
+            </mat-card-header>
+            <img mat-card-image src="./assets/images/conference.jpg" alt="" class="image">
+            <mat-card-content>
+              <div class="description">
+                Equipped with latest technologies including Wi-Fi, air-conditioning and audio-visual equipment, Sanctuary Conference Hall
+                is an ideal place to host medium-sized meetings and conferences.
+                <br>
+                <!-- <br>Available Rooms: {{result.Result[3].NoOfAvailableRooms}} -->
+                <div *ngIf="typeOfRoom.NoOfAvailableRooms >0" class="availabilityText">
+                  <br>Available Rooms: {{typeOfRoom.NoOfAvailableRooms}}
+                  <div style="float:right;">
+                    <button mat-raised-button color="warn"  (click)="setbookingDetails(typeOfRoom.NoOfAvailableRooms,typeOfRoom.RoomPrice,bookingForm.value.todate,bookingForm.value.fromdate,typeOfRoom.RoomType,typeOfRoom.AssetId)">Book</button>
+                  </div>
+                </div>
+                <div *ngIf="typeOfRoom.NoOfAvailableRooms <= 0" class="availabilityText">
+                  <br>Unavailable</div>
+
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <br>
+          <br>
+          <br>
+          <!-- </div> -->
+        </div>
+        <!-- conference room -->
+
+        <!-- accomodation room -->
+        <div *ngSwitchCase="'Accommodation'">
+          <!-- <div *ngIf="result.Result[1].NoOfAvailableRooms"> -->
+          <!-- <div *ngIf="typeOfRoom.NoOfAvailableRooms"> -->
+          <mat-card class="card">
+            <mat-card-header>
+              <mat-card-title>
+                <p style="font-size: 20px">
+                  <b>Accommodation Room</b>
+                </p>
+              </mat-card-title>
+            </mat-card-header>
+            <img mat-card-image src="./assets/images/Accommodation.jpg" alt="" class="image">
+            <mat-card-content>
+              <div class="description">
+                Sanctuary Maratha offers a range of accommodation options that rate among the best in hotel. The six storey hotel comprises
+                380 elegantly appointed and spacious guest-rooms that strike a perfect all available on-demand.
+                <br>
+                <!-- <br>Available Rooms: {{result.Result[1].NoOfAvailableRooms}} -->
+                <div *ngIf="typeOfRoom.NoOfAvailableRooms>0" class="availabilityText">
+                  <br>Available Rooms: {{typeOfRoom.NoOfAvailableRooms}}
+                  <div style="float:right;">
+                    <button mat-raised-button color="warn"  (click)="setbookingDetails(typeOfRoom.NoOfAvailableRooms,typeOfRoom.RoomPrice,bookingForm.value.todate,bookingForm.value.fromdate,typeOfRoom.RoomType,typeOfRoom.AssetId)">Book</button>
+                  </div>
+                </div>
+                <div *ngIf="typeOfRoom.NoOfAvailableRooms <= 0" class="availabilityText">
+                  <br>Unavailable</div>
+
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <br>
+          <br>
+          <br>
+          <!-- </div> -->
+        </div>
+        <!-- accomodation room -->
+
+        <!-- amphitheater -->
+        <div *ngSwitchCase="'Amphitheatre'">
+          <!-- <div *ngIf="result.Result[5].NoOfAvailableRooms"> -->
+          <!-- <div *ngIf="typeOfRoom.NoOfAvailableRooms"> -->
+          <mat-card class="card">
+            <mat-card-header>
+              <mat-card-title>
+                <p style="font-size: 20px">
+                  <b>Amphitheatre</b>
+                </p>
+              </mat-card-title>
+            </mat-card-header>
+
+            <img mat-card-image src="./assets/images/amphitheatre.jpg" alt="" class="image">
+            <mat-card-content>
+              <div class="description">
+                Find convenient, professional space to meet wherever you need. Near the station, near your client, somewhere central for
+                regional staff all available on-demand and by the hour.
+                <br>
+                <div *ngIf="typeOfRoom.NoOfAvailableRooms>0" class="availabilityText">
+                  <br>Available Rooms: {{typeOfRoom.NoOfAvailableRooms}}
+                  <div style="float:right;">
+                    <button mat-raised-button color="warn"  (click)="setbookingDetails(typeOfRoom.NoOfAvailableRooms,typeOfRoom.RoomPrice,bookingForm.value.todate,bookingForm.value.fromdate,typeOfRoom.RoomType,typeOfRoom.AssetId)">Book</button>
+                  </div>
+                </div>
+                <div *ngIf="typeOfRoom.NoOfAvailableRooms <= 0" class="availabilityText">
+                  <br>Unavailable</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <br>
+          <br>
+          <br>
+          <!-- </div> -->
+        </div>
+        <!-- amphetheater -->
+      </ng-container>
+    </div>
+  </div>
+  <p style="text-align:center;font-family:Brush Script MT;color:blueviolet; font-size:35px;margin-top:20px;">
+    <b>
+      <u>Our Fine</u>st Facilities</b>
+  </p>
+  <div class="containermatcard">
+    <div class="row">
+      <div class="col-md-3">
+        <mat-card class="card1">
+          <mat-card-header>
+            <mat-card-title>
+              <p style="font-size:13px">
+                <b>Meeting Room</b>
+              </p>
+            </mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="./assets/confirm-booking-images/meeting/meeting2.jpg" class="image1">
+        </mat-card>
+      </div>
+      <div class="col-md-3">
+        <mat-card class="card1">
+          <mat-card-header>
+            <mat-card-title>
+              <p style="font-size: 13px">
+                <b>Auditorium</b>
+              </p>
+            </mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="./assets/confirm-booking-images/auditorium/auditorium4.jpg" class="image1">
+        </mat-card>
+      </div>
+      <!-- </div> -->
+      <!-- <div class="row"> -->
+      <div class="col-md-3">
+        <mat-card class="card1">
+          <mat-card-header>
+            <mat-card-title>
+              <p style="font-size: 13px">
+                <b>Conference Room</b>
+              </p>
+            </mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="./assets/confirm-booking-images/conference/conference3.jpg" class="image1">
+        </mat-card>
+      </div>
+      <div class="col-md-3">
+        <mat-card class="card1">
+          <mat-card-header>
+            <mat-card-title>
+              <p style="font-size: 13px">
+                <b>Accommodation Room</b>
+              </p>
+            </mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="./assets/confirm-booking-images/accomodation/accomodation2.jpg" class="image1">
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center;font-family:Brush Script MT;color:blueviolet; font-size:35px;margin-top:20px;">
+    <b>
+      <u>Customer Ex</u>periences</b>
+  </p>
+  <div class="containerfeedback">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-card class="card1">
+          <mat-card-header>
+            <mat-card-title>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="review">
+            <i class="fas fa-3x fa-quote-left"></i>
+            <b>Great location, really pleasant and clean rooms, but the thing that makes this such a good place to stay are
+              the staff. All of the people are incredibly helpful and generous with their time and advice.</b>
+            <i class="fas fa-3x fa-quote-right"></i>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-md-4">
+        <mat-card class="card1">
+          <mat-card-header>
+            <mat-card-title>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="review">
+            <i class="fas fa-3x fa-quote-left"></i>
+            <b>We loved this location because of the warm reception, wonderful breakfast, and proximity to the river and places
+              we hoped to visit. The front desk was very friendly and helpful with every customer.</b>
+            <i class="fas fa-3x fa-quote-right"></i>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-md-4">
+        <mat-card class="card1">
+          <mat-card-header>
+            <mat-card-title>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="review">
+            <i class="fas fa-3x fa-quote-left"></i>
+            <b>I have to recommend this hotel for their cleanliness and location. The breakfast was adequate and the front desk
+              help was very polite and informative. The bed was great not too soft and not too hard.</b>
+            <i class="fas fa-3x fa-quote-right"></i>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+    </div>
+  </div>
+</div>

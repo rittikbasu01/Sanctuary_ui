@@ -1,0 +1,212 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header" data-background-color="red">
+                        <h2 class="title" align="center">
+                            <b>My Profile
+                                <span *ngIf="isAdmin==true"> ( ADMIN ) </span>
+                                <span *ngIf="!isAdmin"> {{ membership }}</span>
+                            </b>
+                        </h2>
+                    </div>
+                    <div class="card-content">
+                        <form name="myForm" #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group form-black label-floating is-empty">
+                                        <label class="control-label">First Name</label>
+                                        <input type="text" #refFirst="ngModel" pattern="[A-Z]{1}[a-zA-Z]*(?:(?:\. |[' ]|[-])[a-zA-Z]+)*" required class="form-control"
+                                            maxlength="20" name="FirstName" [ngModel]="firstName">
+                                        <div *ngIf="refFirst.errors && refFirst.dirty" class="alert alert-danger">
+                                            <div [hidden]="!refFirst.errors.pattern">
+                                                Please enter only letters (at least 2). The First character should be a Capital Letter.
+                                            </div>
+                                            <div [hidden]="!refFirst.errors.required">
+                                                Please Enter First Name
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group form-black label-floating is-empty">
+                                        <label class="control-label">Last Name</label>
+                                        <input type="text" #refLast="ngModel" pattern="[A-Z]{1}[a-zA-Z]*(?:(?:\. |[' ]|[-])[a-zA-Z]+)*" required class="form-control"
+                                            maxlength="20" name="LastName" [ngModel]="lastName">
+
+                                        <div *ngIf="refLast.errors && refLast.dirty" class="alert alert-danger">
+                                            <div [hidden]="!refLast.errors.pattern">
+                                                Please enter at least 2 letters. The First character should be a Capital Letter.
+                                            </div>
+                                            <div [hidden]="!refLast.errors.required">
+                                                Please Enter Last Name
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group form-black label-floating is-empty">
+                                        <label class="control-label">Email address</label>
+                                        <input type="email" class="form-control" name="EmailId" disabled value=" {{ email }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group form-black label-floating is-empty">
+                                        <label class="control-label">Company</label>
+                                        <input type="text" #refCompany="ngModel" pattern="^[A-Za-z0-9]{1}([a-zA-Z0-9]|[- @\\.#&!'])*$" maxlength="50" required class="form-control"
+                                            name="Company" [ngModel]="companyName">
+
+                                        <div *ngIf="refCompany.errors && refCompany.dirty" class="alert alert-danger">
+
+                                            <div [hidden]="!refCompany.errors.required">
+                                                Please Enter Company Name
+                                            </div>
+                                            <div [hidden]="!refCompany.errors.pattern">
+                                                Please enter Valid Company Name (First letter should be alphanumeric & minimum length must be 2)
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group form-black label-floating is-empty">
+                                        <label class="control-label">Phone Number</label>
+                                        <input type="text" #refPhone="ngModel" pattern="^[1-9][0-9]{9}" required class="form-control" maxlength="10" name="Phone"
+                                            [ngModel]="phone">
+                                        <div *ngIf="refPhone.errors && refPhone.dirty" class="alert alert-danger">
+                                            <div [hidden]="!refPhone.errors.pattern">
+                                                Please enter 10 digits. The first digit should be 1-9
+                                            </div>
+                                            <div [hidden]="!refPhone.errors.required">
+                                                Please Enter Phone Number
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group form-black label-floating is-empty">
+
+                                        <!-- <button class="btn btn-primary" (click)='OnButtonClick()'>Change Password</button> -->
+                                        <div *ngIf='isSelected'>
+                                            <br>
+                                            <label for="oldPwd">Old Password:</label>
+                                            <input type="password" #refOldPassword="ngModel" (paste)="$event.preventDefault()" required class="form-control" name="OldPassword"
+                                                maxlength="16" #oldPwd placeholder="Enter old password" ngModel>
+
+                                            <div *ngIf='compare'>
+                                                <div [hidden] class="alert alert-danger">
+                                                    The Entered Password Did Not Match with the Password in the Database
+                                                </div>
+                                            </div>
+
+                                            <div *ngIf="refOldPassword.errors && (refOldPassword.dirty || refOldPassword.touched)" class="alert alert-danger">
+
+                                                <div [hidden]="!refOldPassword.errors.required">
+                                                    Please Enter Old Password
+                                                </div>
+
+                                            </div>
+                                            <p>
+                                                <show-hide-password icon="fontawesome">
+
+                                                    <label for="newPwd">New Password:</label>
+                                                    <input type="password" #refNewPassword="ngModel" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*_])[a-zA-Z0-9!@#$%^&*_]{8,}$"
+                                                        minlength="8" maxlength="16" (paste)="$event.preventDefault()" required
+                                                        class="form-control" id="newpassword" name="NewPassword" #newPwd placeholder="Enter new password"
+                                                        ngModel>
+
+                                                </show-hide-password>
+                                            </p>
+
+                                            <div *ngIf="refNewPassword.errors && (refNewPassword.dirty || refNewPassword.touched)" class="alert alert-danger">
+                                                <div [hidden]="!refNewPassword.errors.minlength">
+                                                    Password must have at least 8 characters
+                                                </div>
+
+                                                <div [hidden]="!refNewPassword.errors.required">
+                                                    Please Enter New Password
+                                                </div>
+
+                                                <div [hidden]="!refNewPassword.errors.pattern">
+                                                    Password must contain at least 1 digit, a uppercase character, 1 lowercase character and 1 special character( @ # $ % ^ &
+                                                    _ * )
+                                                </div>
+
+                                            </div>
+                                            <label for="confirmNewPwd">Confirm New Password:</label>
+                                            <input type="password" #refConfirmPassword="ngModel" (copy)="$event.preventDefault()" (paste)="$event.preventDefault()" required
+                                                class="form-control" id="confirmpassword" name="ConfirmPassword" maxlength="16"
+                                                #confirmNewPwd placeholder="Confirm new password" ngModel>
+
+                                            <div *ngIf='!check'>
+                                                <div [hidden] class="alert alert-danger">
+                                                    New Password & Confirm Password fields are Not Matching
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                    <button class="btn btn-primary " (click)='OnButtonClick()'> {{this.buttonText}} Password</button>
+                                    <button [disabled]="!userForm.form.valid" class="btn btn-danger  pull-right">Update Profile</button>
+                                </div>
+
+                                <div class="col-md-2">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group form-black label-floating is-empty"></div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group form-black label-floating is-empty"></div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+</div>

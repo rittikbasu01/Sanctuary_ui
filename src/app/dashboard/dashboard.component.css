@@ -1,0 +1,19 @@
+mat-grid-tile {
+    background:whitesmoke;
+  }
+
+  mat-grid-list{
+      padding: 0px;
+  }
+  .modal-body{
+      padding: 0px;
+
+  }
+  .mat-list-item{
+      color:blue;
+  }
+  
+.form .control.text-left{
+    text-align: left;
+}
+

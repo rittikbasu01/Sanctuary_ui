@@ -1,0 +1,81 @@
+<div class="container">
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <mat-card style="padding:0px">
+        <mat-card-header style="background-color:blueviolet;">
+          <mat-card-title>
+            <p style="font-size:30px;background-color:blueviolet;bottom:0px;">
+              Update Asset
+            </p>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content style="text-align:center;">
+          <form [formGroup]="addAssetForm">
+              <mat-form-field>
+             <!-- Select Room Type * -->
+            <mat-select class="roomtype" placeholder="Select Room Type" formControlName="roomtype" required>
+              
+              <mat-option value="Meeting">Meeting</mat-option>
+              <mat-option value="Amphitheatre">Amphitheatre</mat-option>
+              <mat-option value="Accommodation">Accommodation</mat-option>
+              <mat-option value="Auditorium">Auditorium</mat-option>
+              <mat-option value="Conference">Conference</mat-option>
+            </mat-select>
+          </mat-form-field>
+            
+
+            <br>
+            <mat-form-field>
+              <input matInput placeholder="Enter No of Rooms" formControlName="noofrooms" required>
+              <mat-error *ngIf="addAssetForm.get('noofrooms').hasError('pattern') && !addAssetForm.get('noofrooms').hasError('required')">No of rooms should be between 1 to 100
+              </mat-error>
+            </mat-form-field>
+            
+            <br>
+            <mat-form-field>
+              <input matInput placeholder="Enter Room Price" formControlName="roomprice" maxLength="8" required>
+              <mat-error *ngIf="addAssetForm.get('roomprice').hasError('pattern') && !addAssetForm.get('roomprice').hasError('required')">Enter Proper Price
+              </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+              <!-- <input matInput placeholder="Enter Location Id" formControlName="locationid" required> -->
+              <mat-select placeholder="Locations" formControlName="locationid">
+                <mat-option>-- Select Location --</mat-option>
+                <mat-optgroup label="Australia">
+                  <mat-option *ngFor="let locationCity of  AustralialocationCityNames" [value]="locationCity.LocationId">
+                    {{ locationCity.LocationCity}}
+                  </mat-option>
+                </mat-optgroup>
+
+                <mat-optgroup label="New Zealand">
+                  <mat-option *ngFor="let locationCity of  NewZealandlocationCityNames" [value]="locationCity.LocationId">
+                    {{ locationCity.LocationCity}}
+                  </mat-option>
+                </mat-optgroup>
+
+
+              </mat-select>
+            </mat-form-field>
+            <br>
+            <br/>
+            <button type="button" class="btn btn-success" [disabled]="!addAssetForm.valid" (click)=setAsset(addAssetForm)>Add Asset</button>
+            <div  style="font-size:16px;float:right;color:red;padding-right:70px;">{{result.Message}}
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div class="col-md-3"></div>
+  <br>
+  <br>
+  <br>
+</div>

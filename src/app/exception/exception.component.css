@@ -1,0 +1,11 @@
+a {
+    line-height: 100px;
+    font-weight: 400;
+    color: #4A8BEE;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.go-back {
+    display: none;
+}

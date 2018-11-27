@@ -1,0 +1,12 @@
+.registerform{ 
+    width:100%;
+    min-height: 700px;
+    padding: 20px;   
+    background-image: url("/assets/images/im4.jpg");
+    background-size: 100% 100%;
+    text-align: center;
+}
+  
+.modal-body{
+    text-align: left;
+}
